@@ -28,51 +28,42 @@ class Yahoo_Weather_Widget extends WP_Widget {
     }
 
     public function widget($args, $instance) {
-        public function widget($args, $instance) {
-            echo $args['before_widget'];
-        
-            $location = urlencode(apply_filters('widget_location', !empty($instance['location']) ? $instance['location'] : 'San Francisco, CA'));
-            $yahoo_weather_api = "https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20weather.forecast%20where%20woeid%20in%20(select%20woeid%20from%20geo.places(1)%20where%20text%3D%22{$location}%22)&format=json&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys";
-        
-            $response = wp_remote_get($yahoo_weather_api);
-            if (is_wp_error($response)) {
-                echo __('Failed to fetch weather data.', 'text_domain');
-                return;
-            }
-        
-            $weather_data = json_decode(wp_remote_retrieve_body($response), true);
-            $condition = $weather_data['query']['results']['channel']['item']['condition'];
-        
-            echo '<div class="yahoo-weather">';
-            echo '<div class="yahoo-weather-location">' . esc_html($location) . '</div>';
-            echo '<div class="yahoo-weather-condition">' . esc_html($condition['text']) . '</div>';
-            echo '<div class="yahoo-weather-temperature">' . esc_html($condition['temp']) . '&deg;F</div>';
-            echo '</div>';
-        
-            echo $args['after_widget'];
+        echo $args['before_widget'];
+    
+        $location = urlencode(apply_filters('widget_location', !empty($instance['location']) ? $instance['location'] : 'San Francisco, CA'));
+        $yahoo_weather_api = "https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20weather.forecast%20where%20woeid%20in%20(select%20woeid%20from%20geo.places(1)%20where%20text%3D%22{$location}%22)&format=json&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys";
+    
+        $response = wp_remote_get($yahoo_weather_api);
+        if (is_wp_error($response)) {
+            echo __('Failed to fetch weather data.', 'text_domain');
+            return;
         }
-        
+    
+        $weather_data = json_decode(wp_remote_retrieve_body($response), true);
+        $condition = $weather_data['query']['results']['channel']['item']['condition'];
+    
+        echo '<div class="yahoo-weather">';
+        echo '<div class="yahoo-weather-location">' . esc_html($location) . '</div>';
+        echo '<div class="yahoo-weather-condition">' . esc_html($condition['text']) . '</div>';
+        echo '<div class="yahoo-weather-temperature">' . esc_html($condition['temp']) . '&deg;F</div>';
+        echo '</div>';
+    
+        echo $args['after_widget'];
     }
 
     public function form($instance) {
-        public function form($instance) {
-            $location = !empty($instance['location']) ? $instance['location'] : __('San Francisco, CA', 'text_domain');
-            ?>
-            <p>
-                <label for="<?php echo esc_attr($this->get_field_id('location')); ?>"><?php _e('Location:', 'text_domain'); ?></label>
-                <input class="widefat" id="<?php echo esc_attr($this->get_field_id('location')); ?>" name="<?php echo esc_attr($this->get_field_name('location')); ?>" type="text" value="<?php echo esc_attr($location); ?>">
-            </p>
-            <?php
-        }
-        
+        $location = !empty($instance['location']) ? $instance['location'] : __('San Francisco, CA', 'text_domain');
+        ?>
+        <p>
+            <label for="<?php echo esc_attr($this->get_field_id('location')); ?>"><?php _e('Location:', 'text_domain'); ?></label>
+            <input class="widefat" id="<?php echo esc_attr($this->get_field_id('location')); ?>" name="<?php echo esc_attr($this->get_field_name('location')); ?>" type="text" value="<?php echo esc_attr($location); ?>">
+        </p>
+        <?php
     }
 
     public function update($new_instance, $old_instance) {
-        public function update($new_instance, $old_instance) {
-            $instance = array();
-            $instance['location'] = (!empty($new_instance['location'])) ? sanitize_text_field($new_instance['location']) : '';
-            return $instance;
-        }
-        
+        $instance = array();
+        $instance['location'] = (!empty($new_instance['location'])) ? sanitize_text_field($new_instance['location']) : '';
+        return $instance;
     }
 }
