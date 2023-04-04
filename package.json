@@ -4,13 +4,12 @@
     "description": "Yahoo Weather block for WordPress",
     "main": "index.js",
     "scripts": {
-      "start": "wp-scripts start",
-      "build": "wp-scripts build"
+        "start": "wp-scripts start",
+        "build": "wp-scripts build"
     },
     "author": "Your Name",
     "license": "GPL-2.0-or-later",
     "devDependencies": {
-      "@wordpress/scripts": "^18.0.0"
+        "@wordpress/scripts": "^26.1.0"
     }
-  }
-  
+}
