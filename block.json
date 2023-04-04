@@ -1,0 +1,17 @@
+{
+    "apiVersion": 2,
+    "name": "yahoo-weather-widget/yahoo-weather-block",
+    "title": "Yahoo Weather Block",
+    "category": "widgets",
+    "description": "Displays Yahoo Weather information in a block.",
+    "icon": "cloud",
+    "attributes": {
+      "location": {
+        "type": "string",
+        "default": "San Francisco, CA"
+      }
+    },
+    "editorScript": "file:./build/index.js",
+    "editorStyle": "file:./build/index.css"
+  }
+  

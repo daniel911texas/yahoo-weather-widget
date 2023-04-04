@@ -18,6 +18,30 @@ function yahoo_weather_widget_enqueue_styles() {
 }
 add_action('wp_enqueue_scripts', 'yahoo_weather_widget_enqueue_styles');
 
+function yahoo_weather_block_register() {
+    $block_asset_file = include(plugin_dir_path(__FILE__) . 'yahoo-weather-block/build/index.asset.php');
+    wp_register_script(
+        'yahoo-weather-block-editor',
+        plugins_url('yahoo-weather-block/build/index.js', __FILE__),
+        $block_asset_file['dependencies'],
+        $block_asset_file['version']
+    );
+
+    wp_register_style(
+        'yahoo-weather-block-editor',
+        plugins_url('yahoo-weather-block/build/index.css', __FILE__),
+        array(),
+        filemtime(plugin_dir_path(__FILE__) . 'yahoo-weather-block/build/index.css')
+    );
+
+    register_block_type_from_metadata(plugin_dir_path(__FILE__) . 'yahoo-weather-block/block.json', array(
+        'editor_script' => 'yahoo-weather-block-editor',
+        'editor_style'  => 'yahoo-weather-block-editor',
+    ));
+}
+add_action('init', 'yahoo_weather_block_register');
+
+
 class Yahoo_Weather_Widget extends WP_Widget {
     public function __construct() {
         parent::__construct(

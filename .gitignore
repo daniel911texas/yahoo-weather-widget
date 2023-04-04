@@ -1,0 +1,16 @@
+# Ignore dependencies
+/node_modules
+
+# Ignore build files
+/yahoo-weather-widget/yahoo-weather-block/build
+
+# Ignore configuration files
+/.env
+
+# Ignore OS generated files
+.DS_Store
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
